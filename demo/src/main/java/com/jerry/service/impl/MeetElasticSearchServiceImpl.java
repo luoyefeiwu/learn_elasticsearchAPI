@@ -1,20 +1,33 @@
 package com.jerry.service.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jerry.service.MeetElasticSearchService;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
 import org.apache.http.entity.ContentType;
 import org.apache.http.nio.entity.NStringEntity;
 import org.apache.http.util.EntityUtils;
+import org.elasticsearch.action.search.SearchRequest;
+import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Request;
 import org.elasticsearch.client.Response;
 import org.elasticsearch.client.RestClient;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.SearchHits;
+import org.elasticsearch.search.aggregations.Aggregation;
+import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.Aggregations;
+import org.elasticsearch.search.aggregations.bucket.terms.Terms;
+import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilder;
+import org.elasticsearch.search.aggregations.metrics.avg.Avg;
+import org.elasticsearch.search.aggregations.metrics.avg.AvgAggregationBuilder;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.Collections;
 
 @Service
 public class MeetElasticSearchServiceImpl implements MeetElasticSearchService {
@@ -136,7 +149,6 @@ public class MeetElasticSearchServiceImpl implements MeetElasticSearchService {
         System.out.println(EntityUtils.toString(response.getEntity()));
     }
 
-
     public void GeoBoundingBox() throws IOException {
         String method = "POST";
         String endpoint = "/attractions/restaurant/_search";
@@ -164,6 +176,5 @@ public class MeetElasticSearchServiceImpl implements MeetElasticSearchService {
         Response response = restClient.performRequest(request);
         System.out.println(EntityUtils.toString(response.getEntity()));
     }
-
 
 }
